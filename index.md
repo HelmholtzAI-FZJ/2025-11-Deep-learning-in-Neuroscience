@@ -1,8 +1,8 @@
 ---
-author: Alexandre Strube // Sabrina Benassou // Javad Kasravi
-title: Bringing Deep Learning Workloads to JSC supercomputers course
+author: Alexandre Strube // Sabrina Benassou // Anoop K. Chandran
+title: Deep Learning for Neuroscience
 # subtitle: A primer in supercomputers`
-date: November 19, 2024
+date: November 28, 2025
 ---
 
 # Topics (as links)

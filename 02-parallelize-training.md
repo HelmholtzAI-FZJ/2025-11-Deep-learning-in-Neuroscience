@@ -1,255 +1,249 @@
 ---
-author: Alexandre Strube // Sabrina Benassou // Javad Kasravi
-title: Bringing Deep Learning Workloads to JSC supercomputers
-subtitle: Parallelize Training
-date: November 19, 2024
+author: Alexandre Strube // Sabrina Benassou // Anoop K. Chandran 
+title: Deep Learning for Neuroscience
+# subtitle: A primer in supercomputers`
+date: November 28, 2025
 
 ---
 
-## Good practice
+## Before Starting
 
-- Always store your code in the project folder. In our case 
-- ```bash
-/p/project/training2441/$USER
-```
-
-- Store data in the scratch directory for faster I/O access. Files in scratch are deleted after 90 days of inactivity.
-- ```bash
-/p/scratch/training2441/$USER
-```
-
-- Store the data in `$DATA_dataset` for a more permanent location.This location is not accessible by compute nodes.
-You have to Join the [project](https://judoor.fz-juelich.de/projects/datasets/) in order to store and access data 
-
-
----
-
-## We need to download some code
-
-```bash
-cd $HOME/course
-git clone https://github.com/HelmholtzAI-FZJ/2024-11-course-deep-learning-in-neuroscience
-```
-
----
-
-## The ResNet50 Model
-![](images/resnet.png)
-
----
-
-
-## The ImageNet dataset
-#### Large Scale Visual Recognition Challenge (ILSVRC)
-- An image dataset organized according to the [WordNet hierarchy](https://wordnet.princeton.edu). 
-- Extensively used in algorithms for object detection and image classification at large scale. 
-- It has 1000 classes, that comprises 1.2 million images for training, and 50,000 images for the validation set.
-
-![](images/imagenet_banner.jpeg)
-
----
-
-## The ImageNet dataset
-
-```bash
-ILSVRC
-|-- Data/
-    `-- CLS-LOC
-        |-- test
-        |-- train
-        |   |-- n01440764
-        |   |   |-- n01440764_10026.JPEG
-        |   |   |-- n01440764_10027.JPEG
-        |   |   |-- n01440764_10029.JPEG
-        |   |-- n01695060
-        |   |   |-- n01695060_10009.JPEG
-        |   |   |-- n01695060_10022.JPEG
-        |   |   |-- n01695060_10028.JPEG
-        |   |   |-- ...
-        |   |...
-        |-- val
-            |-- ILSVRC2012_val_00000001.JPEG  
-            |-- ILSVRC2012_val_00016668.JPEG  
-            |-- ILSVRC2012_val_00033335.JPEG      
-            |-- ...
-```
----
-
-## ImageNet class
-
-```python
-class ImageNet(Dataset):
-    def __init__(self, root, split, transform=None):
-        self.samples = []
-        self.targets = []
-        self.transform = transform
-        self.syn_to_class = {}
-        with open(os.path.join(root, "imagenet_class_index.json"), "rb") as f:
-                    json_file = json.load(f)
-                    for class_id, v in json_file.items():
-                        self.syn_to_class[v[0]] = int(class_id)
-        with open(os.path.join(root, "ILSVRC2012_val_labels.json"), "rb") as f:
-                    self.val_to_syn = json.load(f)
-        samples_dir = os.path.join(root, "ILSVRC/Data/CLS-LOC", split)
-        for entry in os.listdir(samples_dir):
-            if split == "train":
-                syn_id = entry
-                target = self.syn_to_class[syn_id]
-                syn_folder = os.path.join(samples_dir, syn_id)
-                for sample in os.listdir(syn_folder):
-                    sample_path = os.path.join(syn_folder, sample)
-                    self.samples.append(sample_path)
-                    self.targets.append(target)
-            elif split == "val":
-                syn_id = self.val_to_syn[entry]
-                target = self.syn_to_class[syn_id]
-                sample_path = os.path.join(samples_dir, entry)
-                self.samples.append(sample_path)
-                self.targets.append(target)
+- Move to the correct folder
     
-    def __len__(self):
-            return len(self.samples)
+    ```bash
+    cd 2025-06-course-Bringing-Deep-Learning-Workloads-to-JSC-supercomputers/code/parallelize/
+    ```
+
+---
+
+## What this code does 
+
+- It trains a [Transformer](https://arxiv.org/pdf/1706.03762) language model on [WikiText-2](https://huggingface.co/datasets/mindchain/wikitext2) dataset to predict the next word in a sequence. 
+- **Transformers** is a deep learning model architecture that uses self-attention to process sequences in parallel.
+- **WikiText-2** is a word-level language modeling dataset consisting of over 2 million tokens extracted from high-quality Wikipedia articles. 
+
+---
+
+## What this code does 
+
+- Again, this is not a deep learning course.
+- If you are not familiar with the model and the dataset, just imagine it as a black box: you provide it with text, and it generates another text.
+
+    ![](images/black_box.svg)
+
+---
+
+## Libraries
+
+- You already downloaded the libraries yesterday that we will use today:
+    - **PyTorch:** A deep learning framework for building and training models.
+    - **datasets** A library from Hugging Face used to access, load, process, and share large datasets.
     
-    def __getitem__(self, idx):
-            x = Image.open(self.samples[idx]).convert("RGB")
-            if self.transform:
-                x = self.transform(x)
-            return x, self.targets[idx]
-```
+---
+
+Let's have a look at the files **```to_distrbuted_training.py```** and **```run_to_distributed_training.sbatch```** in the repo.
+
+![](images/look.jpg)
+
+---
+
+## Run the Training Script
+
+- There are TODOs in these two files. **Do not modify the TODOs for now**. The code is already working, so you don’t need to make any changes at this point.
+- Now run:
+
+    ```bash
+    sbatch run_to_distributed_training.sbatch 
+    ```
+
+- Spoiler alert 🚨
+
+- The code won't work.
+
+- Check the output and error files
+
+---
+
+## What is the problem?
+
+- Remember, there is no internet on the compute node.
+- Therefore, you should:
+    - **Comment out** lines 76 **to** 135.
+    - Activate your environment:
+
+        ```bash
+        source $HOME/course/sc_venv_template/activate.sh
+        ```
+
+    - Run:
+
+        ```bash
+        python to_distributed_training.py
+        ```
+
+    - **Uncomment back** lines 76-135.
+    - Finally, run your job again 🚀:
+
+        ```bash
+        sbatch run_to_distributed_training.sbatch
+        ```
+
+---
+
+## JOB Running
+
+- Congrats, you are training a DL model on the supercomputer using one GPU 🎉
 
 --- 
 
-## PyTorch Lightning Data Module 
+## llview
 
-```python
-class ImageNetDataModule(pl.LightningDataModule):
-    def __init__(
-        self,
-        data_root: str,
-        batch_size: int,
-        num_workers: int,
-        dataset_transforms: dict(),
-    ):
-        super().__init__()
-        self.data_root = data_root
-        self.batch_size = batch_size
-        self.num_workers = num_workers
-        self.dataset_transforms = dataset_transforms
-        
-    def setup(self, stage: Optional[str] = None):
-        self.train = ImageNet(self.data_root, "train", self.dataset_transforms)
-            
-    def train_dataloader(self):
-        return DataLoader(self.train, batch_size=self.batch_size, \
-            num_workers=self.num_workers)
-```
+- You can monitor your training using [llview](https://go.fzj.de/llview-jureca). 
+- Use your Judoor credentials to connect.
+- Check the job number that you are intrested in.
+    ![](images/llview_job.png){height=400px}
 
 ---
 
-## PyTorch Lightning Module
 
-``` python
-class resnet50Model(pl.LightningModule):
-    def __init__(self):
-        super().__init__()
-        weights = ResNet50_Weights.DEFAULT
-        self.model = resnet50(weights=weights)
+## llview
 
-    def forward(self, x):
-        return self.model(x)
+- Go to the right to open the PDF document. **It may take some time to load the job information, so please wait until the icon turns blue**.
+    ![](images/llview.png){height=450px}
 
-    def training_step(self,batch):
-        x, labels = batch
-        pred=self.forward(x)
-        train_loss = F.cross_entropy(pred, labels)
-        self.log("training_loss", train_loss)
-    
-        return train_loss
+---
 
-    def configure_optimizers(self):
-            return torch.optim.Adam(self.parameters(), lr=0.02)
+## llview
 
-```
+- You have many information about your job once you open the PDF file.
+    ![](images/llview_info.png)
+
+---
+
+## GPU utilization 
+
+- You can see that in fact we are using **1 GPU**
+
+    ![](images/llview_gpu_1.png)
+
+---
+
+## GPU utilization   
+
+- It is a waste of resources.
+
+- The training takes time (1h32m according to llview).
+
+- Then, can we run our model on multiple GPUs ?
+
+---
+
+## What if
+
+- At line 3 in file **```run_to_distributed_training.sbatch```**, we increase the number of GPUs to 4:
+
+    ```bash
+    #SBATCH --gres=gpu:4
+    ```
+
+- And run our job again
+
+    ```bash
+    sbatch run_to_distributed_training.sbatch
+    ```
 
 --- 
 
-## One GPU training 
 
-```python
-transform = transforms.Compose([
-    transforms.ToTensor(),
-    transforms.Resize((256, 256))
-])
+## llview
 
-# 1. Organize the data
-datamodule = ImageNetDataModule("/p/scratch/training2441/", 256, \
-    int(os.getenv('SLURM_CPUS_PER_TASK')), transform)
-# 2. Build the model using desired Task
-model = resnet50Model()
-# 3. Create the trainer
-trainer = pl.Trainer(max_epochs=10,  accelerator="gpu")
-# 4. Train the model
-trainer.fit(model, datamodule=datamodule)
-# 5. Save the model!
-trainer.save_checkpoint("image_classification_model.pt")
-```
+- We are still using **1 GPU**
+
+- ![](images/llview_gpu_2.png)
 
 ---
 
-## One GPU training 
+## We need communication
 
-``` bash 
-#!/bin/bash -x
-#SBATCH --nodes=1            
-#SBATCH --gres=gpu:1
-#SBATCH --ntasks-per-node=1  
-#SBATCH --cpus-per-task=128
-#SBATCH --time=06:00:00
-#SBATCH --partition=dc-gpu
-#SBATCH --account=training2441
-#SBATCH --output=%j.out
-#SBATCH --error=%j.err
-#SBATCH --reservation=training2441
+- Without correct setup, the GPUs might not be utilized.
 
-# To get number of cpu per task
-export SRUN_CPUS_PER_TASK="$SLURM_CPUS_PER_TASK"
-# activate env
-source $HOME/course/$USER/sc_venv_template/activate.sh
-# run script from above
-time srun python3 gpu_training.py
-```
+- Furthermore, we don't have an established communication between the GPUs
 
-```bash
-real	342m11.864s
-```
+    ![](images/dist/no_comm.svg){height=400px}
 
 ---
 
-## DEMO
+## We need communication
+
+![](images/dist/comm1.svg){height=500px}
 
 ---
 
-## But what about many GPUs?
+## We need communication
 
-::: {.container}
-:::: {.col}
+![](images/dist/comm2.svg){height=500px}
 
+---
 
+## collective operations
 
-![](images/GPUs.svg)
+- The GPUs use collective operations to communicate and share data in parallel computing
+- The most common collective operations are: All Reduce, All Gather, and Reduce Scatter
 
+---
 
-::::
-:::: {.col}
-- We make use of the GPU of our supercomputer and distribute our training to make training faster.
-- It's when things get interesting
-::::
-:::
+## All Reduce 
+
+![](images/dist/all_reduce.svg)
+
+- Other operations, such as **min**, **max**, and **avg**, can also be performed using All-Reduce.
+
+---
+
+## All Gather
+
+![](images/dist/all_gather.svg)
+
+--- 
+
+## Reduce Scatter
+
+![](images/dist/reduce_scatter.svg)
+
+--- 
+
+## Terminologies
+
+- Before going further, we need to learn some terminologies
+
+---
+
+## World Size
+
+![](images/dist/gpus.svg){height=550px}
+
+---
+
+## Rank
+
+![](images/dist/rank.svg){height=550px}
+
+---
+
+## local_rank
+
+![](images/dist/local_rank.svg){height=550px}
+
+---
+
+## Now
+
+That we have understood how the devices communicate and the terminologies used in parallel computing, 
+we can move on to distributed training (training on multiple GPUs).
 
 ---
 
 ## Distributed Training
-
 
 - Parallelize the training across multiple nodes, 
 - Significantly enhancing training speed and model accuracy.
@@ -258,518 +252,528 @@ real	342m11.864s
 
 ---
 
-<!-- ## Terminologies
+## Distributed Data Parallel (DDP)
 
-- WORLD_SIZE: number of processes participating in the job.
-- RANK: the rank of the process in the network.
-- LOCAL_RANK: the rank of the process on the local machine.
-- MASTER_PORT: free port on machine with rank 0.
-<!-- - MASTER_ADDR: address of rank 0 node. -->
+[DDP](https://pytorch.org/tutorials/intermediate/ddp_tutorial.html) is a method in parallel computing used to train deep learning models across multiple GPUs or nodes efficiently.
 
-<!-- ---  -->
-
-
-
-
-<!-- ![](images/ranks.svg)
-
----
-
-![](images/local_ranks.svg)
-
-
---- -->
-
-
-## Parallel Training with PyTorch DDP
-
-- [PyTorch's DDP (Distributed Data Parallel)](https://lightning.ai/docs/pytorch/stable/accelerators/gpu_intermediate.html) works as follows:
-    - Each GPU across each node gets its own process.
-    - Each GPU gets visibility into a subset of the overall dataset. It will only ever see that subset.
-    - Each process inits the model.
-    - Each process performs a full forward and backward pass in parallel.
-    - The gradients are synced and averaged across all processes.
-    - Each process updates its optimizer.
+![](images/ddp/ddp-2.svg){height=400px}
 
 --- 
 
-## Data Parallel
+## DDP
 
-![](images/data-parallel.svg)
-
----
-
-## Data Parallel
-
-![](images/data-parallel-multiple-data.svg)
-
----
-
-## Data Parallel - Averaging
-
-![](images/data-parallel-averaging.svg)
-
----
-
-## Multi-GPU training
-
-1 node and 4 GPU
-
-```bash
-#!/bin/bash -x
-#SBATCH --nodes=1                     
-#SBATCH --gres=gpu:4                  # Use the 4 GPUs available
-#SBATCH --ntasks-per-node=4           # When using pl it should always be set to 4
-#SBATCH --cpus-per-task=32            # Divide the number of cpus (128) by the number of GPUs (4)
-#SBATCH --time=02:00:00
-#SBATCH --partition=dc-gpu
-#SBATCH --account=training2441
-#SBATCH --output=%j.out
-#SBATCH --error=%j.err
-#SBATCH --reservation=training2441
-
-export CUDA_VISIBLE_DEVICES=0,1,2,3    # Very important to make the GPUs visible
-export SRUN_CPUS_PER_TASK="$SLURM_CPUS_PER_TASK"
-
-source $HOME/course/$USER/sc_venv_template/activate.sh
-time srun python3 gpu_training.py
-```
-
-```bash
-real	89m15.923s
-```
-
----
-
-## DEMO
-
----
-
-## That's it for data parallel!
-
-- Copy of the model on each GPU
-- Use different data for each GPU
-- Everything else is the same
-- Average after each iteration
-- Update of the weights
-
----
-
-## There are more levels!
-
-<!-- ![](images/lets-go-deeper.jpg) -->
+![](images/ddp/ddp-3.svg){height=500px}
 
 --- 
 
-## Data Parallel - Multi Node
+## DDP
 
-![](images/data-parallel-multi-node.svg)
+![](images/ddp/ddp-4.svg){height=500px}
 
----
+--- 
 
-## Data Parallel - Multi Node
+## DDP
 
-![](images/data-parallel-multi-node-averaging.svg)
+![](images/ddp/ddp-5.svg){height=500px}
 
----
+--- 
 
-## DDP steps
+## DDP
 
-1. Set up the environement variables for the distributed mode (WORLD_SIZE, RANK, LOCAL_RANK ...)
+![](images/ddp/ddp-6.svg){height=500px}
 
-- ```python
-# The number of total processes started by Slurm.
-ntasks = os.getenv('SLURM_NTASKS')
-# Index of the current process.
-rank = os.getenv('SLURM_PROCID')
-# Index of the current process on this node only.
-local_rank = os.getenv('SLURM_LOCALID')
-# The number of nodes
-nnodes = os.getenv("SLURM_NNODES")
-```
+--- 
 
----
+## DDP
 
-## DDP steps
+![](images/ddp/ddp-7.svg){height=500px}
 
-2. Initialize a sampler to specify the sequence of indices/keys used in data loading.
-3. Implements data parallelism of the model. 
-4. Allow only one process to save checkpoints.
+--- 
 
-- ```python
-datamodule = ImageNetDataModule("/p/scratch/training2441/", 256, \
-    int(os.getenv('SLURM_CPUS_PER_TASK')), transform)
-trainer = pl.Trainer(max_epochs=10,  accelerator="gpu", num_nodes=nnodes)
-trainer.fit(model, datamodule=datamodule)
-trainer.save_checkpoint("image_classification_model.pt")
-```
+## DDP
+
+![](images/ddp/ddp-8.svg){height=500px}
+
+--- 
+
+## DDP
+
+![](images/ddp/ddp-9.svg){height=500px}
+
+--- 
+
+## DDP
+
+If you're scaling DDP to use multiple nodes, the underlying principle remains the same as single-node multi-GPU training.
 
 ---
 
-## Multi-Node training
+## DDP
+
+![](images/ddp/multi_node.svg){height=500px}
+
+---
+
+## DDP recap
+
+- Each GPU on each node gets its own process.
+- Each GPU has a copy of the model.
+- Each GPU has visibility into a subset of the overall dataset and will only see that subset.
+- Each process performs a full forward and backward pass in parallel and calculates its gradients.
+- The gradients are synchronized and averaged across all processes.
+- Each process updates its optimizer.
+
+---
+
+## Let's start coding!
+
+- Whenever you see **TODOs**💻📝, follow the instructions to either copy-paste the code at the specified line numbers or type it yourself.
+
+- Depending on how you copy and paste, the line numbers may vary, but always refer to the TODO numbers in the code and slides.
+
+---
+
+## Setup communication
+
+- We need to setup a communication among the GPUs. 
+- For that we would need the file **```distributed_utils.py```**.
+- **TODOs**💻📝:
+    1. Import **```distributed_utils```** file at line 11:
+        
+        ```python 
+        # This file contains utility_functions for distributed training.
+        from distributed_utils import *
+        ```
+    2. Then **remove** lines 65 and 66:
+
+        ```python
+        ## TODO 2-3: Remove this line and replace it with a call to the utility function setup().
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        ```
+    3. and **add** at line 65 a call to the method **```setup()```** defined in **```distributed_utils.py```**: 
+
+        ```python
+        # Initialize a communication group and return the right identifiers.
+        local_rank, rank, device, world_size = setup()
+        ```
+
+---
+
+## Setup communication
+
+What is in the **```setup()```** method ?
 
 ```python
-transform = transforms.Compose([
-    transforms.ToTensor(),
-    transforms.Resize((256, 256))
-])
+def setup():
+    # Initializes a communication group using 'nccl' as the backend for GPU communication.
+    torch.distributed.init_process_group(backend='nccl')
+    # Get the identifier of each process within a node
+    local_rank = int(os.getenv('LOCAL_RANK'))
+    # Get the global identifier of each process within the distributed system
+    rank = int(os.environ['RANK'])
+    # Creates a torch.device object that represents the GPU to be used by this process.
+    device = torch.device('cuda', local_rank)
+    # Sets the default CUDA device for the current process, 
+    # ensuring all subsequent CUDA operations are performed on the specified GPU device.
+    torch.cuda.set_device(device)
+    # Different random seed for each process.
+    torch.random.manual_seed(1000 + torch.distributed.get_rank())
 
-# 1. The number of nodes
-nnodes = os.getenv("SLURM_NNODES")
-# 2. Organize the data
-datamodule = ImageNetDataModule("/p/scratch/training2441/", 128, \
-    int(os.getenv('SLURM_CPUS_PER_TASK')), transform)
-# 3. Build the model using desired Task
-model = resnet50Model()
-# 4. Create the trainer
-trainer = pl.Trainer(max_epochs=10,  accelerator="gpu", num_nodes=nnodes)
-# 5. Train the model
-trainer.fit(model, datamodule=datamodule)
-# 6. Save the model!
-trainer.save_checkpoint("image_classification_model.pt")
+    return local_rank, rank, device
 ```
 
 ---
 
-## Multi-Node training
+## DistributedSampler 
 
-16 nodes and 4 GPU each 
+- **TODO 4**💻📝:
 
-```bash
-#!/bin/bash -x
-#SBATCH --nodes=16                     # This needs to match Trainer(num_nodes=...)
-#SBATCH --gres=gpu:4                   # Use the 4 GPUs available
-#SBATCH --ntasks-per-node=4            # When using pl it should always be set to 4
-#SBATCH --cpus-per-task=32             # Divide the number of cpus (128) by the number of GPUs (4)
-#SBATCH --time=00:15:00
-#SBATCH --partition=dc-gpu
-#SBATCH --account=training2441
-#SBATCH --output=%j.out
-#SBATCH --error=%j.err
-#SBATCH --reservation=training2441
+    - At line 76, instantiate a **DistributedSampler** object for each set to ensure that each process gets a different subset of the data.
+    
+        ```python
+        # DistributedSampler object for each set to ensure that each process gets a different subset of the data.
+        train_sampler = torch.utils.data.distributed.DistributedSampler(train_dataset, 
+                                                                        shuffle=True, 
+                                                                        seed=args.seed)
+        val_sampler = torch.utils.data.distributed.DistributedSampler(val_dataset)
+        test_sampler = torch.utils.data.distributed.DistributedSampler(test_dataset)
+        ```
 
-export CUDA_VISIBLE_DEVICES=0,1,2,3    # Very important to make the GPUs visible
-export SRUN_CPUS_PER_TASK="$SLURM_CPUS_PER_TASK"
+---
 
-source $HOME/course/$USER/sc_venv_template/activate.sh
-time srun python3 ddp_training.py
-```
+## DataLoader
 
-```bash
-real	6m56.457s
+- **TODO 5**💻📝:
+
+    - At line 85, **REMOVE** **```shuffle=True```** in the DataLoader of train_loader and **REPLACE** it by **```sampler=train_sampler```**
+        
+        ```python 
+        train_loader = DataLoader(train_dataset, 
+                                batch_size=args.batch_size, 
+                                sampler=train_sampler, # pass the sampler argument to the DataLoader
+                                num_workers=int(os.getenv('SLURM_CPUS_PER_TASK')),
+                                pin_memory=True)
+        ```
+
+---
+
+## DataLoader
+
+- **TODO 6**💻📝:
+
+    -  At line 90, pass **val_sampler** to the sampler argument of the val_dataLoader
+
+        ```python
+        val_loader = DataLoader(val_dataset,
+                                batch_size=args.batch_size,
+                                sampler=val_sampler, # pass the sampler argument to the DataLoader
+                                pin_memory=True)
+        ```
+
+- **TODO 7**💻📝:
+
+    - At line 94, pass **test_sampler** to the sampler argument of the test_dataLoader
+
+        ```python
+        test_loader = DataLoader(test_dataset,
+                                batch_size=args.test_batch_size,
+                                sampler=test_sampler, # pass the sampler argument to the DataLoader
+                                pin_memory=True)    
+        ```
+
+--- 
+
+## Model
+
+- **TODO 8**💻📝:
+
+    - At line 110, wrap the model in a **DistributedDataParallel** (DDP) module to parallelize the training across multiple GPUs.
+    
+        ```python 
+        # Wrap the model in DistributedDataParallel module 
+        model = torch.nn.parallel.DistributedDataParallel(
+            model,
+            device_ids=[local_rank],
+        )
+        ```
+
+---
+
+## Sampler 
+
+- **TODO 9**💻📝:
+
+    - At line 124, **set** the current epoch for the dataset sampler to ensure proper data shuffling in each epoch
+
+        ```python
+        # Pass the current epoch to the sampler to ensure proper data shuffling in each epoch
+        train_sampler.set_epoch(epoch)
+        ```
+
+---
+
+## All Reduce Operation
+
+- **TODO 10**💻📝:
+
+    - At **lines 37 and 58**, Obtain the global average loss across the GPUs.
+
+        ```python
+        # Return the global average loss.
+        torch.distributed.all_reduce(result, torch.distributed.ReduceOp.AVG)
+        ```
+
+---
+
+## print
+
+- **TODO 11**💻📝:
+
+    - **Replace** all the ```print``` methods by **```print0```** method defined in **```distributed_utils.py```** to allow only rank 0 to print in the output file.
+    
+    - At **line 130** 
+
+        ```python
+        # We use the utility function print0 to print messages only from rank 0.
+        print0(f'[{epoch+1}/{args.epochs}] Train loss: {train_loss:.5f}, validation loss: {val_loss:.5f}')
+        ```
+
+    - At **line 142**
+    
+        ```python
+        # We use the utility function print0 to print messages only from rank 0.
+        print0('Final test loss:', test_loss.item())
+        ```
+
+---
+
+## print
+
+The definition of the function **print0** is in **```distributed_utils.py```**
+
+```python
+functools.lru_cache(maxsize=None)
+def is_root_process():
+    """Return whether this process is the root process."""
+    return torch.distributed.get_rank() == 0
+
+
+def print0(*args, **kwargs):
+    """Print something only on the root process."""
+    if is_root_process():
+        print(*args, **kwargs)
 ```
 
 ---
 
-## DEMO
+## Save model 
+
+- **TODO 12**💻📝:
+
+    - At **lines 137 and 146**, replace torch.save method with the utility function save0 to allow only the process with rank 0 to save the model.
+ 
+        ```python 
+        # We allow only rank=0 to save the model
+        save0(model, 'model-best.pt')
+        ```
+        ```python 
+        # We allow only rank=0 to save the model
+        save0(model, 'model-final.pt')
+        ```
 
 ---
 
-## Multi-Node training
+## Save model 
 
-With 4 nodes: 
+The method **save0** is defined in **```distributed_utils.py```**
 
-```bash
-real	24m48.169s
-```
+```python
+functools.lru_cache(maxsize=None)
+def is_root_process():
+    """Return whether this process is the root process."""
+    return torch.distributed.get_rank() == 0
 
-With 8 nodes: 
 
-```bash
-real	13m10.722s
-```
-
-With 16 nodes: 
-
-```bash
-real	6m56.457s
-```
-
-With 32 nodes: 
-
-```bash
-real	4m48.313s
-```
----
-
-## Data Parallel
-
-<!-- What changed? -->
-
-- It was 
-- ```python
-trainer = pl.Trainer(max_epochs=10,  accelerator="gpu")
-``` 
-- Became 
-- ```python
-nnodes = os.getenv("SLURM_NNODES")
-trainer = pl.Trainer(max_epochs=10,  accelerator="gpu", num_nodes=nnodes)
-```
-
----
-
-## Data Parallel
-
-<!-- What changed? -->
-
-- It was
-- ```bash
-#SBATCH --nodes=1                
-#SBATCH --gres=gpu:1
-#SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=128
-```
-- Became
-- ```bash
-#SBATCH --nodes=16                   # This needs to match Trainer(num_nodes=...)
-#SBATCH --gres=gpu:4                 # Use the 4 GPUs available
-#SBATCH --ntasks-per-node=4          # When using pl it should always be set to 4
-#SBATCH --cpus-per-task=32           # Divide the number of cpus (128) by the number of GPUs (4)
-export CUDA_VISIBLE_DEVICES=0,1,2,3  # Very important to make the GPUs visible
+def save0(*args, **kwargs):
+    """Pass the given arguments to `torch.save`, but only on the root
+    process.
+    """
+    # We do *not* want to write to the same location with multiple
+    # processes at the same time.
+    if is_root_process():
+        torch.save(*args, **kwargs)
 ```
 
 --- 
 
-## Before we go further...
+## Destroy Process Group
 
-- Data parallel is usually good enough 👌
-- If you need more than this, you should be giving this course, not me 🤷‍♂️
+- **TODO 13**💻📝:
 
----
+    - At **line 149**, destroy every process group and backend by calling destroy_process_group() 
 
-## Model Parallel
-
-- Model *itself* is too big to fit in one single GPU 🐋
-- Each GPU holds a slice of the model 🍕
-- Data moves from one GPU to the next
+        ```python 
+        # Destroy the process group to clean up resources
+        destroy_process_group()
+        ```
 
 ---
 
-## Model Parallel
-
-![](images/model-parallel.svg)
-
----
-
-
-## Model Parallel
-
-![](images/model-parallel-pipeline-1.svg)
-
----
-
-## Model Parallel
-
-![](images/model-parallel-pipeline-2.svg)
-
----
-
-## Model Parallel
-
-![](images/model-parallel-pipeline-3.svg)
-
----
-
-## Model Parallel
-
-![](images/model-parallel-pipeline-4.svg)
-
----
-
-## Model Parallel
-
-![](images/model-parallel-pipeline-5.svg)
-
----
-
-## Model Parallel
-
-![](images/model-parallel-pipeline-6.svg)
-
----
-
-## Model Parallel
-
-![](images/model-parallel-pipeline-7.svg)
-
----
-
-## Model Parallel
-
-![](images/model-parallel-pipeline-8.svg)
-
----
-
-## Model Parallel
-
-![](images/model-parallel-pipeline-9.svg)
-
----
-
-## Model Parallel
-
-![](images/model-parallel-pipeline-10.svg)
-
----
-
-## What's the problem here? 🧐
-
----
-
-## Model Parallel
-
-- Waste of resources
-- While one GPU is working, others are waiting the whole process to end
-- ![](images/no_pipe.png)
-    - [Source: GPipe: Efficient Training of Giant Neural Networks using Pipeline Parallelism](https://arxiv.org/abs/1811.06965)
-
-
----
-
-## Model Parallel - Pipelining
-
-![](images/model-parallel-pipeline-1.svg)
-
----
-
-## Model Parallel - Pipelining
-
-![](images/model-parallel-pipeline-2-multibatch.svg)
-
----
-
-## Model Parallel - Pipelining
-
-![](images/model-parallel-pipeline-3-multibatch.svg)
-
----
-
-## Model Parallel - Pipelining
-
-![](images/model-parallel-pipeline-4-multibatch.svg)
-
----
-
-## Model Parallel - Pipelining
-
-![](images/model-parallel-pipeline-5-multibatch.svg)
-
----
-
-## Model Parallel - Pipelining
-
-![](images/model-parallel-pipeline-6-multibatch.svg)
-
----
-
-## Model Parallel - Pipelining
-
-![](images/model-parallel-pipeline-7-multibatch.svg)
-
----
-
-## Model Parallel - Pipelining
-
-![](images/model-parallel-pipeline-8-multibatch.svg)
-
----
-
-## Model Parallel - Pipelining
-
-![](images/model-parallel-pipeline-9-multibatch.svg)
-
----
-
-## This is an oversimplification!
-
-- Actually, you split the input minibatch into multiple microbatches.
-- There's still idle time - an unavoidable "bubble" 🫧
-- ![](images/pipe.png)
-
----
-
-## Model Parallel - Multi Node
-
-- In this case, each node does the same as the others. 
-- At each step, they all synchronize their weights.
-
----
-
-## Model Parallel - Multi Node
-
-![](images/model-parallel-multi-node.svg)
-
----
-
-## Model Parallel - going bigger
-
-- You can also have layers spreaded over multiple gpus
-- One can even pipeline among nodes....
-
----
-
-## Recap
-
-- Data parallelism:
-    - Split the data over multiple GPUs
-    - Each GPU runs the whole model
-    - The gradients are averaged at each step
-    - Update of the model's weights
-- Data parallelism, multi-node:
-    - Same, but gradients are averaged across nodes
-- Model parallelism:
-    - Split the model over multiple GPUs
-    - Each GPU does the forward/backward pass
-- Model parallelism, multi-node:
-    - Same, but gradients are averaged across nodes
-
----
-
-## TensorBoard
-
-- In resnet50.py
-- ```python
-self.log("training_loss", train_loss)
+## Destroy Process Group
+
+The method **destroy_process_group** is defined in **```distributed_utils.py```**
+
+```python
+def destroy_process_group():
+    """Destroy the process group."""
+    if torch.distributed.is_initialized():
+        torch.distributed.destroy_process_group()
 ```
-- ![](images/pl_tb.png)
 
---- 
+---
 
-## TensorBoard
+## We are almost there
 
-- Open a notebook 
-- Choose PyDeepLearning-2024.3 kernel
-- Write 
+- That's it for the **to_distributed_training.py** file. 
+- But before launching our job, we need to add some lines to **run_to_distributed_training.sbatch** file 
 
-    ```python
-    import tensorboard
-    %load_ext tensorboard
-    %tensorboard --logdir=<PATH>
+---
+
+## Setup communication
+
+In **```run_to_distributed_training.sbatch```** file:
+
+- **TODOs 14**💻📝: 
+    - At line 3, increase the number of GPUs to 4 if it is not already done.
+
+        ```bash
+        #SBATCH --gres=gpu:4
+        ```
+
+    - At line 19, pass the correct number of devices.
+
+        ```bash
+        # Set up four visible GPUs that the job can use 
+        export CUDA_VISIBLE_DEVICES=0,1,2,3
+        ```
+
+---
+
+## Setup communication
+
+Stay in **```run_to_distributed_training.sbatch```** file:
+
+- **TODO 15**💻📝: we need to setup **MASTER_ADDR** and **MASTER_PORT** to allow communication over the system.
+
+    - At line 22, add the following:
+
+        ```bash
+        # Extracts the first hostname from the list of allocated nodes to use as the master address.
+        MASTER_ADDR="$(scontrol show hostnames "$SLURM_JOB_NODELIST" | head -n 1)"
+        # Modifies the master address to allow communication over InfiniBand cells.
+        MASTER_ADDR="${MASTER_ADDR}i"
+        # Get IP for hostname.
+        export MASTER_ADDR="$(nslookup "$MASTER_ADDR" | grep -oP '(?<=Address: ).*')"
+        export MASTER_PORT=7010
+        ```
+
+---
+
+## Setup communication
+
+We are not done yet with **```run_to_distributed_training.sbatch```** file:
+
+- **TODO 16**💻📝: 
+    
+    - We **remove** the lauching script at line 41:
+    
+        ```bash
+        srun --cpu_bind=none python to_distributed_training.py 
+        ```
+    
+    - We use **torchrun_jsc** instead and pass the following argument: 
+
+        ```bash
+        # Launch a distributed training job across multiple nodes and GPUs
+        srun --cpu_bind=none bash -c "torchrun_jsc \
+            --nnodes=$SLURM_NNODES \
+            --rdzv_backend c10d \
+            --nproc_per_node=gpu \
+            --rdzv_id $RANDOM \
+            --rdzv_endpoint=$MASTER_ADDR:$MASTER_PORT \
+            --rdzv_conf=is_host=\$(if ((SLURM_NODEID)); then echo 0; else echo 1; fi) \
+            to_distributed_training.py "
+        ```
+
+---
+
+## Setup communication
+
+- The arguments that we pass are:
+
+    1. **```nnodes=$SLURM_NNODES```**: the number of nodes
+    2. **```rdzv_backend c10d```**: the c10d method for coordinating the setup of communication among distributed processes.
+    3. **```nproc_per_node=gpu```** the number of GPUs
+    4. **```rdzv_id $RANDOM```** a random id which that acts as a central point for initializing and coordinating the communication among different nodes participating in the distributed training. 
+    5. **```rdzv_endpoint=$MASTER_ADDR:$MASTER_PORT```** the IP that we setup in the previous slide to ensure all nodes know where to connect to start the training session.
+    6. **```rdzv_conf=is_host=\$(if ((SLURM_NODEID)); then echo 0; else echo 1; fi)```** The rendezvous host which is responsible for coordinating the initial setup of communication among the nodes.
+
+---
+
+## done ✅
+
+- You can finally run:
+
+    ```bash
+    sbatch run_to_distributed_training.sbatch
     ```
 
 ---
 
-![](images/tb.png){ width=750px }
+## llview
+
+- Let's have a look at our job using [llview](https://go.fzj.de/llview-jureca) again.
+
+- You can see that now, we are using all the GPUs of the node
+
+- ![](images/llview_gpu_4.png)
+
+--- 
+
+## llview
+
+- And that our job took less time to finish training (25m vs 1h32m with one GPU)
+
+- But what about using more nodes ?
 
 ---
 
-## DEMO
+## What about using more nodes ?
 
 ---
 
-## Llview
-- [llview](https://go.fzj.de/llview-jureca)
-- https://go.fzj.de/llview-jureca
-![](images/llview.png)
+## Multi-node training
+
+- **TODO 17**💻📝: in **```run_to_distributed_training.sbatch```** at line 2, you can increase the number of nodes to 2:
+
+    ```bash
+    #SBATCH --nodes=2
+    ```
+
+- Hence, you will use 8 GPUs for training.
+
+- Run again:
+
+    ```bash
+    sbatch run_to_distributed_training.sbatch
+    ```
+
+--- 
+
+## llview
+
+- Open [llview](https://go.fzj.de/llview-jureca) again.
+
+- You can see that now, we are using 2 nodes and 8 GPUs.
+
+- ![](images/llview_gpu_8.png)
+
+- And the training took less time (14m)
 
 ---
 
-## Part 2 RECAP 
+## Amazing ✨
 
-- Ran parallel code.
-- Can submit single GPU, multi-GPU and multi-node training.
-- Use TensorBoard on the supercomputer.
-- Usage of llview.
+---
+
+## RECAP 
+
+- You know where to store your code and your data. 🗂️📄
+- You know what distributed training is. 🧑‍💻
+- You can submit training jobs on a single GPU, multiple GPUs, or across multiple nodes. 🎮💻
+- You are familiar with DDP. ⚙️💡
+- You know how to monitor your training using llview. 📊👀
+
+---
+
+## Find Out More
+
+- Here are some useful:
+
+    - Papers:
+        - [FSDP paper](https://arxiv.org/pdf/2304.11277)
+        - [Pipeline Parallelism](https://arxiv.org/pdf/1811.06965)
+        - [Tensor Parallelism](https://arxiv.org/pdf/1909.08053)
+
+    - Tutorials:
+        - [PyTorch at JSC](https://sdlaml.pages.jsc.fz-juelich.de/ai/recipes/pytorch_at_jsc/)
+        - [PyTorch tutorials GitHub](https://github.com/pytorch/tutorials/tree/main)
+        - [PyTorch documentation](https://pytorch.org/tutorials/distributed/home.html)
+
+    - Links
+        - [AI Landing Page](https://sdlaml.pages.jsc.fz-juelich.de/ai/)
+        - [Other courses at JSC](https://www.fz-juelich.de/en/ias/jsc/education/training-courses)
+
 
 ---
 
@@ -777,7 +781,7 @@ self.log("training_loss", train_loss)
 
 #### Feedback is more than welcome!
 
-#### Link to [other courses at JSC](https://go.fzj.de/dl-in-neuroscience-all-courses)
+#### Link to [other courses at JSC](https://www.fz-juelich.de/en/jsc/news/events/training-courses)
 
 ---
 

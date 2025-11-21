@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
-  <meta name="author" content="Alexandre Strube // Sabrina Benassou // Javad Kasravi">
-  <meta name="dcterms.date" content="2024-11-19">
-  <title>Bringing Deep Learning Workloads to JSC supercomputers course</title>
+  <meta name="author" content="Alexandre Strube // Sabrina Benassou // Anoop K. Chandran">
+  <meta name="dcterms.date" content="2025-11-28">
+  <title>Deep Learning for Neuroscience</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -222,11 +222,10 @@
     <div class="slides">
 
 <section id="title-slide">
-  <h1 class="title">Bringing Deep Learning Workloads to JSC
-supercomputers course</h1>
-  <p class="author">Alexandre Strube // Sabrina Benassou // Javad
-Kasravi</p>
-  <p class="date">November 19, 2024</p>
+  <h1 class="title">Deep Learning for Neuroscience</h1>
+  <p class="author">Alexandre Strube // Sabrina Benassou // Anoop K.
+Chandran</p>
+  <p class="date">November 28, 2025</p>
 </section>
 
 <section id="communication" class="slide level2">
@@ -234,24 +233,20 @@ Kasravi</p>
 <p>Links for the complimentary parts of this course:</p>
 <ul>
 <li class="fragment"><a
-href="https://go.fzj.de/dl-in-neuroscience-course">Event page</a></li>
-<li class="fragment"><a
-href="https://go.fzj.de/dl-in-neuroscience-project-join">Judoor project
+href="https://judoor.fz-juelich.de/projects/training2561">Judoor project
 page invite</a></li>
 <li class="fragment"><a
 href="https://helmholtzai-fzj.github.io/2024-11-course-deep-learning-in-neuroscience/#/title-slide">This
-document: https://go.fzj.de/dl-in-neuroscience</a></li>
+document:
+https://helmholtzai-fzj.github.io/2024-11-course-deep-learning-in-neuroscience/#/title-slide</a></li>
 <li class="fragment">Our mailing list for <a
 href="https://lists.fz-juelich.de/mailman/listinfo/ml">AI news</a></li>
-<li class="fragment"><a
-href="https://go.fzj.de/dl-in-neuroscience-survey">Survey at the end of
-the course</a></li>
 <li class="fragment"><a
 href="https://gitlab.jsc.fz-juelich.de/kesselheim1/sc_venv_template">Virtual
 Environment template</a></li>
 <li class="fragment"><a
-href="https://go.fzj.de/dl-in-neuroscience-repo">SOURCE of the
-course/slides on Github</a></li>
+href="https://github.com/HelmholtzAI-FZJ/2025-11-Deep-learning-in-Neuroscience">SOURCE
+of the course/slides on Github</a></li>
 </ul>
 <p><img
 data-src="images/Logo_FZ_Juelich_rgb_Schutzzone_transparent.svg" /></p>
@@ -291,8 +286,8 @@ data-src="images/Logo_FZ_Juelich_rgb_Schutzzone_transparent.svg" /></p>
 </div>
 <div class="col">
 <figure>
-<img data-src="pics/javad.jpg" alt="Javad Kasravi" />
-<figcaption aria-hidden="true">Javad Kasravi</figcaption>
+<img data-src="pics/anoop.jpg" alt="Anoop K. Chandran" />
+<figcaption aria-hidden="true">Anoop K. Chandran</figcaption>
 </figure>
 </div>
 </div>
@@ -311,40 +306,28 @@ data-src="images/Logo_FZ_Juelich_rgb_Schutzzone_transparent.svg" /></p>
 </thead>
 <tbody>
 <tr class="odd">
-<td>10:00 - 10:10</td>
-<td>Welcome</td>
+<td>11:00 - 11:10</td>
+<td>Welcome &amp; Introduction</td>
 </tr>
 <tr class="even">
-<td>10:10 - 10:40</td>
-<td>Introduction</td>
-</tr>
-<tr class="odd">
-<td>10:40 - 11:00</td>
+<td>11:10 - 11:30</td>
 <td>Jupyter-JSC</td>
 </tr>
-<tr class="even">
-<td>11:00 - 11:10</td>
-<td>Coffee Break</td>
-</tr>
 <tr class="odd">
-<td>11:10 - 11:30</td>
+<td>11:30 - 11:40</td>
 <td>SLURM</td>
 </tr>
 <tr class="even">
-<td>11:30 - 12:00</td>
+<td>11:40 - 12:00</td>
 <td>Setup Environement</td>
 </tr>
 <tr class="odd">
-<td>12:00 - 12:10</td>
+<td>12:00 - 12:05</td>
 <td>Coffee Break</td>
 </tr>
 <tr class="even">
-<td>12:10 - 12:40</td>
+<td>12:05 - 13:00</td>
 <td>Distributed Data Parallel</td>
-</tr>
-<tr class="odd">
-<td>12:40 - 13:00</td>
-<td>Model Parallelism and Analysis</td>
 </tr>
 </tbody>
 </table>
@@ -352,15 +335,9 @@ data-src="images/Logo_FZ_Juelich_rgb_Schutzzone_transparent.svg" /></p>
 <section class="slide level2">
 
 <h3 id="note">Note</h3>
-<p>Please open this document on your own browser! We will need it for
-the exercises. <a
-href="https://go.fzj.de/dl-in-neuroscience">https://go.fzj.de/dl-in-neuroscience</a></p>
-<figure>
-<img data-src="images/dl-in-neuroscience.png"
-alt="Mobile friendly, but you need it on your computer, really" />
-<figcaption aria-hidden="true">Mobile friendly, but you need it on your
-computer, really</figcaption>
-</figure>
+<p>Please open this <a
+href="https://helmholtzai-fzj.github.io/2024-11-course-deep-learning-in-neuroscience/#/title-slide">document</a>
+on your own browser! We will need it for the exercises.</p>
 </section>
 <section class="slide level2">
 
@@ -547,7 +524,7 @@ compile, etc</li>
 <li class="fragment">Go to <a
 href="https://go.fzj.de/dl-in-neuroscience-project-join">https://go.fzj.de/dl-in-neuroscience-project-join</a></li>
 <li class="fragment">Join the course project
-<code>training2441</code></li>
+<code>training2561</code></li>
 <li class="fragment">Sign the Usage Agreements (<a
 href="https://drive.google.com/file/d/1mEN1GmWyGFp75uMIi4d6Tpek2NC_X8eY/view">Video</a>)</li>
 <li class="fragment">Compute time allocation is based on compute
@@ -771,7 +748,7 @@ the previous section, and copy all the content from the following into
 this file.</p>
 <div class="sourceCode" id="cb7"><pre
 class="sourceCode numberSource bash number-lines"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="co">#SBATCH --account=training2441           # Who pays?</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="co">#SBATCH --account=training2561           # Who pays?</span></span>
 <span id="cb7-3"><a href="#cb7-3"></a><span class="co">#SBATCH --nodes=1                        # How many compute nodes</span></span>
 <span id="cb7-4"><a href="#cb7-4"></a><span class="co">#SBATCH --job-name=matrix-multiplication</span></span>
 <span id="cb7-5"><a href="#cb7-5"></a><span class="co">#SBATCH --ntasks-per-node=1              # How many mpi processes/node</span></span>
@@ -780,7 +757,7 @@ class="sourceCode numberSource bash number-lines"><code class="sourceCode bash">
 <span id="cb7-8"><a href="#cb7-8"></a><span class="co">#SBATCH --error=error.%j</span></span>
 <span id="cb7-9"><a href="#cb7-9"></a><span class="co">#SBATCH --time=00:01:00          # For how long can it run?</span></span>
 <span id="cb7-10"><a href="#cb7-10"></a><span class="co">#SBATCH --partition=dc-gpu         # Machine partition</span></span>
-<span id="cb7-11"><a href="#cb7-11"></a><span class="co">#SBATCH --reservation=training2441 # For today only</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="co">#SBATCH --reservation= # For today only</span></span>
 <span id="cb7-12"><a href="#cb7-12"></a></span>
 <span id="cb7-13"><a href="#cb7-13"></a><span class="ex">module</span> load Stages/2024</span>
 <span id="cb7-14"><a href="#cb7-14"></a><span class="ex">module</span> load GCC OpenMPI PyTorch  <span class="co"># Load the correct modules on the compute node(s)</span></span>
@@ -824,7 +801,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="
 <li class="fragment">Some partitions have reservations, which means that
 only certain users can use them at certain times.</li>
 <li class="fragment">For this course, it’s called
-<code>training2441</code></li>
+<code>training2561</code></li>
 </ul>
 </section>
 <section class="slide level2">
@@ -847,10 +824,10 @@ using Editor !!</p>
 
 <h3 id="setup-project-path">Setup project path</h3>
 <div class="sourceCode" id="cb11"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="va">$PROJECT_training2441</span>/<span class="va">$USER</span></span>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="va">$PROJECT_training2561</span>/<span class="va">$USER</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Create</span> a shortcut for the project on the home folder</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> ~/course <span class="kw">;</span> <span class="fu">ln</span> <span class="at">-s</span> <span class="va">$PROJECT_training2441</span>/<span class="va">$USER</span> ~/course</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> ~/course <span class="kw">;</span> <span class="fu">ln</span> <span class="at">-s</span> <span class="va">$PROJECT_training2561</span>/<span class="va">$USER</span> ~/course</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Enter course folder and</span></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/course</span>
@@ -969,7 +946,7 @@ classifier</h3>
 <p>create file fastai.sbatch</p>
 <div class="sourceCode" id="cb18"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=training2441</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=training2561</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-user=MYUSER@fz-juelich.de</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=ALL</span></span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
@@ -980,7 +957,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href=
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --error=error.%j</span></span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=00:20:00</span></span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --partition=dc-gpu</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --reservation=training2441 # For today only</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --reservation= # For today only</span></span>
 <span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> sc_venv_template/activate.sh <span class="co"># Now we finally use the fastai module</span></span>
 <span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
@@ -1029,7 +1006,7 @@ to give up</li>
 error:</li>
 <li class="fragment"><div class="sourceCode" id="cb22"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>Traceback (most recent call last):</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  File <span class="st">&quot;/p/project/training2441/strube1/cats.py&quot;</span>, line <span class="dv">5</span>, <span class="kw">in</span> <span class="op">&lt;</span>module<span class="op">&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  File <span class="st">&quot;/p/project/training2561/strube1/cats.py&quot;</span>, line <span class="dv">5</span>, <span class="kw">in</span> <span class="op">&lt;</span>module<span class="op">&gt;</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> untar_data(URLs.PETS)<span class="op">/</span><span class="st">&#39;images&#39;</span></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    ...</span>
 <span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    ...</span>

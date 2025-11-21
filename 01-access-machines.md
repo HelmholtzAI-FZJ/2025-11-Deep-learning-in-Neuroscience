@@ -1,20 +1,18 @@
 ---
-author: Alexandre Strube // Sabrina Benassou // Javad Kasravi
-title: Bringing Deep Learning Workloads to JSC supercomputers course
+author: Alexandre Strube // Sabrina Benassou // Anoop K. Chandran 
+title: Deep Learning for Neuroscience
 # subtitle: A primer in supercomputers`
-date: November 19, 2024
+date: November 28, 2025
 ---
 ## Communication:
 
 Links for the complimentary parts of this course: 
 
-- [Event page](https://go.fzj.de/dl-in-neuroscience-course)
-- [Judoor project page invite](https://go.fzj.de/dl-in-neuroscience-project-join)
-- [This document: https://go.fzj.de/dl-in-neuroscience](https://helmholtzai-fzj.github.io/2024-11-course-deep-learning-in-neuroscience/#/title-slide)
+- [Judoor project page invite](https://judoor.fz-juelich.de/projects/training2561)
+- [This document: https://helmholtzai-fzj.github.io/2024-11-course-deep-learning-in-neuroscience/#/title-slide](https://helmholtzai-fzj.github.io/2024-11-course-deep-learning-in-neuroscience/#/title-slide)
 - Our mailing list for [AI news](https://lists.fz-juelich.de/mailman/listinfo/ml)
-- [Survey at the end of the course](https://go.fzj.de/dl-in-neuroscience-survey)
 - [Virtual Environment template](https://gitlab.jsc.fz-juelich.de/kesselheim1/sc_venv_template)
-- [SOURCE of the course/slides on Github](https://go.fzj.de/dl-in-neuroscience-repo)
+- [SOURCE of the course/slides on Github](https://github.com/HelmholtzAI-FZJ/2025-11-Deep-learning-in-Neuroscience)
 
 ![](images/Logo_FZ_Juelich_rgb_Schutzzone_transparent.svg)
 
@@ -43,7 +41,7 @@ Links for the complimentary parts of this course:
 ![Sabrina Benassou](pics/sabrina.jpg)
 ::::
 :::: {.col}
-![Javad Kasravi](pics/javad.jpg)
+![Anoop K. Chandran](pics/anoop.jpg)
 ::::
 
 :::
@@ -56,24 +54,18 @@ Links for the complimentary parts of this course:
 
 | Time          | Title        |
 | ------------- | -----------  |
-| 10:00 - 10:10 | Welcome      |
-| 10:10 - 10:40 | Introduction |
-| 10:40 - 11:00 | Jupyter-JSC |
-| 11:00 - 11:10 | Coffee Break  |
-| 11:10 - 11:30 | SLURM |
-| 11:30 - 12:00 | Setup Environement |
-| 12:00 - 12:10 | Coffee Break |
-| 12:10 - 12:40 | Distributed Data Parallel | 
-| 12:40 - 13:00 | Model Parallelism and Analysis |
+| 11:00 - 11:10 | Welcome & Introduction |
+| 11:10 - 11:30 | Jupyter-JSC |
+| 11:30 - 11:40 | SLURM |
+| 11:40 - 12:00 | Setup Environement |
+| 12:00 - 12:05 | Coffee Break |
+| 12:05 - 13:00 | Distributed Data Parallel | 
 
 ---
 
 ### Note
 
-Please open this document on your own browser! We will need it for the exercises.
-[https://go.fzj.de/dl-in-neuroscience](https://go.fzj.de/dl-in-neuroscience)
-
-![Mobile friendly, but you need it on your computer, really](images/dl-in-neuroscience.png)
+Please open this [document](https://helmholtzai-fzj.github.io/2024-11-course-deep-learning-in-neuroscience/#/title-slide) on your own browser! We will need it for the exercises.
 
 ---
 
@@ -231,7 +223,7 @@ Please open this document on your own browser! We will need it for the exercises
 
 #### Getting compute time
 - Go to [https://go.fzj.de/dl-in-neuroscience-project-join](https://go.fzj.de/dl-in-neuroscience-project-join)
-- Join the course project `training2441`
+- Join the course project `training2561`
 - Sign the Usage Agreements ([Video](https://drive.google.com/file/d/1mEN1GmWyGFp75uMIi4d6Tpek2NC_X8eY/view))
 - Compute time allocation is based on compute projects. For every compute job, a compute project pays.
 - Time is measured in core-hours. One hour of Jureca DC is 128 core-hours.
@@ -460,7 +452,7 @@ Create a file named `jureca-matrix.sbatch` as described in the previous section,
 
 ``` {.bash .number-lines}
 #!/bin/bash
-#SBATCH --account=training2441           # Who pays?
+#SBATCH --account=training2561           # Who pays?
 #SBATCH --nodes=1                        # How many compute nodes
 #SBATCH --job-name=matrix-multiplication
 #SBATCH --ntasks-per-node=1              # How many mpi processes/node
@@ -469,7 +461,7 @@ Create a file named `jureca-matrix.sbatch` as described in the previous section,
 #SBATCH --error=error.%j
 #SBATCH --time=00:01:00          # For how long can it run?
 #SBATCH --partition=dc-gpu         # Machine partition
-#SBATCH --reservation=training2441 # For today only
+#SBATCH --reservation=dl_inm  # For today only
 
 module load Stages/2024
 module load GCC OpenMPI PyTorch  # Load the correct modules on the compute node(s)
@@ -518,7 +510,7 @@ squeue --me
 ### Reservations
 
 - Some partitions have reservations, which means that only certain users can use them at certain times.
-- For this course, it's called `training2441`
+- For this course, it's called `training2561`
 
 --- 
 
@@ -541,10 +533,10 @@ simply open `output.412169` and `error.412169` using Editor !!
 ### Setup project path
 
 ```bash
-mkdir $PROJECT_training2441/$USER
+mkdir $PROJECT_training2561/$USER
 
 Create a shortcut for the project on the home folder
-rm -rf ~/course ; ln -s $PROJECT_training2441/$USER ~/course
+rm -rf ~/course ; ln -s $PROJECT_training2561/$USER ~/course
 
 # Enter course folder and
 cd ~/course
@@ -671,7 +663,7 @@ create file  fastai.sbatch
 
 ```bash
 #!/bin/bash
-#SBATCH --account=training2441
+#SBATCH --account=training2561
 #SBATCH --mail-user=MYUSER@fz-juelich.de
 #SBATCH --mail-type=ALL
 #SBATCH --nodes=1
@@ -682,7 +674,7 @@ create file  fastai.sbatch
 #SBATCH --error=error.%j
 #SBATCH --time=00:20:00
 #SBATCH --partition=dc-gpu
-#SBATCH --reservation=training2441 # For today only
+#SBATCH --reservation=dl_inm  # For today only
 
 source sc_venv_template/activate.sh # Now we finally use the fastai module
 
@@ -734,7 +726,7 @@ The following modules were not unloaded:
 - If you run it longer, you will get the actual error:
 - ```python
 Traceback (most recent call last):
-  File "/p/project/training2441/strube1/cats.py", line 5, in <module>
+  File "/p/project/training2561/strube1/cats.py", line 5, in <module>
     path = untar_data(URLs.PETS)/'images'
     ...
     ...
