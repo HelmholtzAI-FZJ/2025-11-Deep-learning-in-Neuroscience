@@ -333,7 +333,7 @@ data-src="images/Logo_FZ_Juelich_rgb_Schutzzone_transparent.svg" /></p>
 
 <h3 id="note">Note</h3>
 <p>Please open this <a
-href="https://helmholtzai-fzj.github.io/2024-11-course-deep-learning-in-neuroscience/#/title-slide">document</a>
+href="https://helmholtzai-fzj.github.io/2025-11-Deep-learning-in-Neuroscience/#/title-slide">document</a>
 on your own browser! We will need it for the exercises.</p>
 </section>
 <section class="slide level2">
@@ -518,10 +518,8 @@ compile, etc</li>
 <h3 id="connecting-to-jureca-dc">Connecting to Jureca DC</h3>
 <h4 id="getting-compute-time">Getting compute time</h4>
 <ul>
-<li class="fragment">Go to <a
-href="https://go.fzj.de/dl-in-neuroscience-project-join">https://go.fzj.de/dl-in-neuroscience-project-join</a></li>
-<li class="fragment">Join the course project
-<code>training2561</code></li>
+<li class="fragment">Join the course project <a
+href="https://judoor.fz-juelich.de/projects/join/training2561">training2561</a></li>
 <li class="fragment">Sign the Usage Agreements (<a
 href="https://drive.google.com/file/d/1mEN1GmWyGFp75uMIi4d6Tpek2NC_X8eY/view">Video</a>)</li>
 <li class="fragment">Compute time allocation is based on compute
@@ -633,13 +631,13 @@ such software?</h4>
 <h2>Example: PyTorch</h2>
 <p>Copy and paste these lines</p>
 <div class="sourceCode" id="cb2"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load Stages/2024</span>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load Stages/2025</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load GCC OpenMPI Python PyTorch</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># And we run a small test: import pytorch and ask its version</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">&quot;import torch ; print(torch.__version__)&quot;</span> </span></code></pre></div>
 <p>Should look like this:</p>
 <div class="sourceCode" id="cb3"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> module load Stages/2024</span>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> module load Stages/2025</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> module load GCC OpenMPI Python PyTorch</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python <span class="at">-c</span> <span class="st">&quot;import torch ; print(torch.__version__)&quot;</span> </span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">2.1.0</span></span></code></pre></div>
@@ -707,7 +705,7 @@ class="sourceCode numberSource bash number-lines"><code class="sourceCode bash">
 <section class="slide level2">
 
 <h4 id="run-code-in-login-node">Run code in login node</h4>
-<pre><code>module load Stages/2023
+<pre><code>module load Stages/2025
 module load GCC OpenMPI PyTorch
 python matrix.py</code></pre>
 </section>
@@ -756,7 +754,7 @@ class="sourceCode numberSource bash number-lines"><code class="sourceCode bash">
 <span id="cb7-10"><a href="#cb7-10"></a><span class="co">#SBATCH --partition=dc-gpu         # Machine partition</span></span>
 <span id="cb7-11"><a href="#cb7-11"></a><span class="co">#SBATCH --reservation=dl_inm  # For today only</span></span>
 <span id="cb7-12"><a href="#cb7-12"></a></span>
-<span id="cb7-13"><a href="#cb7-13"></a><span class="ex">module</span> load Stages/2024</span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="ex">module</span> load Stages/2025</span>
 <span id="cb7-14"><a href="#cb7-14"></a><span class="ex">module</span> load GCC OpenMPI PyTorch  <span class="co"># Load the correct modules on the compute node(s)</span></span>
 <span id="cb7-15"><a href="#cb7-15"></a></span>
 <span id="cb7-16"><a href="#cb7-16"></a><span class="ex">srun</span> python matrix.py            <span class="co"># srun tells the supercomputer how to run it</span></span></code></pre></div>
@@ -900,7 +898,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href=
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Setting</span> vars</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> following modules were not unloaded:</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">(</span><span class="ex">Use</span> <span class="st">&quot;module --force purge&quot;</span> to unload all<span class="kw">)</span><span class="bu">:</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a> <span class="ex">1</span><span class="er">)</span> <span class="ex">Stages/2024</span></span></code></pre></div>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a> <span class="ex">1</span><span class="er">)</span> <span class="ex">Stages/2025</span></span></code></pre></div>
 <div class="sourceCode" id="cb16"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jureca01</span> $ python</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Python</span> 3.11.3 <span class="er">(</span><span class="ex">main,</span> Jun 25 2023, 13:17:30<span class="kw">)</span> <span class="ex">[GCC</span> 12.3.0]</span>
@@ -987,7 +985,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href=
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> following modules were not unloaded:</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">Use</span> <span class="st">&quot;module --force purge&quot;</span> to unload all<span class="kw">)</span><span class="bu">:</span></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span><span class="er">)</span> <span class="ex">Stages/2024</span></span></code></pre></div></li>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span><span class="er">)</span> <span class="ex">Stages/2025</span></span></code></pre></div></li>
 </ul>
 </section>
 <section id="section" class="slide level2">

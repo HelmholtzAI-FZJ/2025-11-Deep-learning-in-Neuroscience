@@ -64,7 +64,7 @@ Links for the complimentary parts of this course:
 
 ### Note
 
-Please open this [document](https://helmholtzai-fzj.github.io/2024-11-course-deep-learning-in-neuroscience/#/title-slide) on your own browser! We will need it for the exercises.
+Please open this [document](https://helmholtzai-fzj.github.io/2025-11-Deep-learning-in-Neuroscience/#/title-slide) on your own browser! We will need it for the exercises.
 
 ---
 
@@ -221,8 +221,7 @@ Please open this [document](https://helmholtzai-fzj.github.io/2024-11-course-dee
 ### Connecting to Jureca DC
 
 #### Getting compute time
-- Go to [https://go.fzj.de/dl-in-neuroscience-project-join](https://go.fzj.de/dl-in-neuroscience-project-join)
-- Join the course project `training2561`
+- Join the course project [training2561](https://judoor.fz-juelich.de/projects/join/training2561)
 - Sign the Usage Agreements ([Video](https://drive.google.com/file/d/1mEN1GmWyGFp75uMIi4d6Tpek2NC_X8eY/view))
 - Compute time allocation is based on compute projects. For every compute job, a compute project pays.
 - Time is measured in core-hours. One hour of Jureca DC is 128 core-hours.
@@ -335,7 +334,7 @@ Search with the version - it will suggest the hierarchy
 
 Copy and paste these lines
 ```bash
-module load Stages/2024
+module load Stages/2025
 module load GCC OpenMPI Python PyTorch
 # And we run a small test: import pytorch and ask its version
 python -c "import torch ; print(torch.__version__)" 
@@ -343,7 +342,7 @@ python -c "import torch ; print(torch.__version__)"
 
 Should look like this:
 ```bash
-$ module load Stages/2024
+$ module load Stages/2025
 $ module load GCC OpenMPI Python PyTorch
 $ python -c "import torch ; print(torch.__version__)" 
 2.1.0
@@ -413,7 +412,7 @@ print("The result is:\n", result)
 
 #### Run code in login node
 ```
-module load Stages/2023
+module load Stages/2025
 module load GCC OpenMPI PyTorch
 python matrix.py
 ```
@@ -462,7 +461,7 @@ Create a file named `jureca-matrix.sbatch` as described in the previous section,
 #SBATCH --partition=dc-gpu         # Machine partition
 #SBATCH --reservation=dl_inm  # For today only
 
-module load Stages/2024
+module load Stages/2025
 module load GCC OpenMPI PyTorch  # Load the correct modules on the compute node(s)
 
 srun python matrix.py            # srun tells the supercomputer how to run it
@@ -611,7 +610,7 @@ The activation script must be sourced, otherwise the virtual environment will no
 Setting vars
 The following modules were not unloaded:
   (Use "module --force purge" to unload all):
- 1) Stages/2024
+ 1) Stages/2025
 ```
 
 ```bash
@@ -709,7 +708,7 @@ $ cat err.7948496
 The following modules were not unloaded:
   (Use "module --force purge" to unload all):
 
-  1) Stages/2024
+  1) Stages/2025
 ```
 
 ---

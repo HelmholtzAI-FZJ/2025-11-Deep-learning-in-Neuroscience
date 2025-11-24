@@ -8,10 +8,17 @@ date: November 28, 2025
 
 ## Before Starting
 
+- We need to download some code
+
+    ```bash
+    cd $HOME/course
+    git clone https://github.com/HelmholtzAI-FZJ/2025-11-Deep-learning-in-Neuroscience.git
+    ```
+
 - Move to the correct folder
     
     ```bash
-    cd 2025-06-course-Bringing-Deep-Learning-Workloads-to-JSC-supercomputers/code/parallelize/
+    cd code/parallelize
     ```
 
 ---
@@ -746,7 +753,7 @@ We are not done yet with **```run_to_distributed_training.sbatch```** file:
 
 ---
 
-## RECAP 
+## PART 2 RECAP 
 
 - You know where to store your code and your data. 🗂️📄
 - You know what distributed training is. 🧑‍💻
