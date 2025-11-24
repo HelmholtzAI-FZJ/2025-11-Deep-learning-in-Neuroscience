@@ -237,10 +237,7 @@ href="https://judoor.fz-juelich.de/projects/training2561">Judoor project
 page invite</a></li>
 <li class="fragment"><a
 href="https://helmholtzai-fzj.github.io/2024-11-course-deep-learning-in-neuroscience/#/title-slide">This
-document:
-https://helmholtzai-fzj.github.io/2024-11-course-deep-learning-in-neuroscience/#/title-slide</a></li>
-<li class="fragment">Our mailing list for <a
-href="https://lists.fz-juelich.de/mailman/listinfo/ml">AI news</a></li>
+document</a></li>
 <li class="fragment"><a
 href="https://gitlab.jsc.fz-juelich.de/kesselheim1/sc_venv_template">Virtual
 Environment template</a></li>
@@ -757,7 +754,7 @@ class="sourceCode numberSource bash number-lines"><code class="sourceCode bash">
 <span id="cb7-8"><a href="#cb7-8"></a><span class="co">#SBATCH --error=error.%j</span></span>
 <span id="cb7-9"><a href="#cb7-9"></a><span class="co">#SBATCH --time=00:01:00          # For how long can it run?</span></span>
 <span id="cb7-10"><a href="#cb7-10"></a><span class="co">#SBATCH --partition=dc-gpu         # Machine partition</span></span>
-<span id="cb7-11"><a href="#cb7-11"></a><span class="co">#SBATCH --reservation= # For today only</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="co">#SBATCH --reservation=dl_inm  # For today only</span></span>
 <span id="cb7-12"><a href="#cb7-12"></a></span>
 <span id="cb7-13"><a href="#cb7-13"></a><span class="ex">module</span> load Stages/2024</span>
 <span id="cb7-14"><a href="#cb7-14"></a><span class="ex">module</span> load GCC OpenMPI PyTorch  <span class="co"># Load the correct modules on the compute node(s)</span></span>
@@ -957,7 +954,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href=
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --error=error.%j</span></span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=00:20:00</span></span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --partition=dc-gpu</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --reservation= # For today only</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --reservation=dl_inm  # For today only</span></span>
 <span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> sc_venv_template/activate.sh <span class="co"># Now we finally use the fastai module</span></span>
 <span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
