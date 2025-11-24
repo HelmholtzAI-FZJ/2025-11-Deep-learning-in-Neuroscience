@@ -9,7 +9,7 @@ date: November 28, 2025
 Links for the complimentary parts of this course: 
 
 - [Judoor project page invite](https://judoor.fz-juelich.de/projects/training2561)
-- [This document](https://helmholtzai-fzj.github.io/2024-11-course-deep-learning-in-neuroscience/#/title-slide)
+- [This document](https://helmholtzai-fzj.github.io/2025-11-Deep-learning-in-Neuroscience/#/title-slide)
 - [Virtual Environment template](https://gitlab.jsc.fz-juelich.de/kesselheim1/sc_venv_template)
 - [SOURCE of the course/slides on Github](https://github.com/HelmholtzAI-FZJ/2025-11-Deep-learning-in-Neuroscience)
 
