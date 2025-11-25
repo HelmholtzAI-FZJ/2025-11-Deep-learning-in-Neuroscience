@@ -579,16 +579,20 @@ git clone https://gitlab.jsc.fz-juelich.de/kesselheim1/sc_venv_template.git
 - Edit the file sc_venv_template/requirements.txt
 
 - Add these lines at the end: 
--
- ```bash
-fastai==2.7.15
-scipy==1.11.1
-matplotlib==3.7.2
-scikit-learn==1.3.1
-pandas==2.0.3
-torch==2.1.2
-accelerate
-```
+
+  ```bash
+  fastai
+  scipy==1.13.1
+  matplotlib==3.9.2
+  scikit-learn==1.5.2
+  pandas==2.2.2
+  transformers==4.46.3
+  sentencepiece==0.2.0
+  datasets==3.6.0
+  torch==2.5.1
+  accelerate
+  torchrun_jsc>=0.0.15
+  ```
 
 - Run on the terminal: `sc_venv_template/setup.sh`
 

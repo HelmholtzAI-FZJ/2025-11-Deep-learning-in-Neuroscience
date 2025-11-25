@@ -18,7 +18,7 @@ date: November 28, 2025
 - Move to the correct folder
     
     ```bash
-    cd code/parallelize
+    cd 2025-11-Deep-learning-in-Neuroscience/code/parallelize/
     ```
 
 ---
@@ -75,7 +75,7 @@ Let's have a look at the files **```to_distrbuted_training.py```** and **```run_
 
 - Remember, there is no internet on the compute node.
 - Therefore, you should:
-    - **Comment out** lines 76 **to** 135.
+    - **Comment out** lines 76 **to** 141.
     - Activate your environment:
 
         ```bash
@@ -88,7 +88,7 @@ Let's have a look at the files **```to_distrbuted_training.py```** and **```run_
         python to_distributed_training.py
         ```
 
-    - **Uncomment back** lines 76-135.
+    - **Uncomment back** lines 76-141.
     - Finally, run your job again 🚀:
 
         ```bash

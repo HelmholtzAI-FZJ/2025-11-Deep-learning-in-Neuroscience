@@ -237,7 +237,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/HelmholtzAI-FZJ/2025-11-Deep-learning-in-Neuroscience.git</span></code></pre></div></li>
 <li class="fragment"><p>Move to the correct folder</p>
 <div class="sourceCode" id="cb2"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> code/parallelize</span></code></pre></div></li>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> 2025-11-Deep-learning-in-Neuroscience/code/parallelize/</span></code></pre></div></li>
 </ul>
 </section>
 <section id="what-this-code-does" class="slide level2">
@@ -310,7 +310,7 @@ node.</li>
 <li class="fragment">Therefore, you should:
 <ul>
 <li class="fragment"><p><strong>Comment out</strong> lines 76
-<strong>to</strong> 135.</p></li>
+<strong>to</strong> 141.</p></li>
 <li class="fragment"><p>Activate your environment:</p>
 <div class="sourceCode" id="cb4"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> <span class="va">$HOME</span>/course/sc_venv_template/activate.sh</span></code></pre></div></li>
@@ -318,7 +318,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="
 <div class="sourceCode" id="cb5"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> to_distributed_training.py</span></code></pre></div></li>
 <li class="fragment"><p><strong>Uncomment back</strong> lines
-76-135.</p></li>
+76-141.</p></li>
 <li class="fragment"><p>Finally, run your job again 🚀:</p>
 <div class="sourceCode" id="cb6"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> run_to_distributed_training.sbatch</span></code></pre></div></li>
